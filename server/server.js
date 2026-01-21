@@ -44,7 +44,7 @@ app.post("/generate", async (req, res) => {
     }
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4.1-mini",
+      model: "gpt-4.1",
       temperature: 0.3,
       max_tokens: 2048,
       messages: [
