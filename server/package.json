@@ -8,7 +8,8 @@
   },
   "peerDependencies": {
     "typescript": "^5"
-  },
+  },"scripts": {"dev": "bun server.js"}
+  ,
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
     "cors": "^2.8.5",

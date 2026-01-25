@@ -1,4 +1,11 @@
 import { useState } from 'react'
+import {
+  SandpackProvider,
+  SandpackLayout,
+  SandpackCodeEditor,
+  SandpackPreview,
+  SandpackFileExplorer,
+} from "@codesandbox/sandpack-react";
 
 function App() {
   const [prompt, setPrompt] = useState('')
@@ -30,7 +37,7 @@ function App() {
       if (!response.ok) throw new Error('Failed to generate')
       
       const data = await response.json()
-      
+      console.log(data.code)
       // Add to conversation history
       setConversation([...conversation, {
         userPrompt: prompt,
@@ -80,7 +87,7 @@ function App() {
           className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-purple-500 to-pink-500 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
         />
       </div>
-
+      
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div className="mx-auto max-w-3xl py-32 sm:py-48 lg:py-56">
           <div className="text-center mb-12">
@@ -155,34 +162,81 @@ function App() {
       </div>
 
       {latestCode && (
-        <div className="px-6 pb-24 lg:px-8">
-          <div className="mx-auto max-w-5xl space-y-8">
-            <div className="rounded-2xl bg-gray-950/60 p-6 shadow-2xl ring-1 ring-white/10">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-white">Generated Code</h2>
-                <button
-                  onClick={handleCopy}
-                  className="rounded-lg bg-purple-400 px-4 py-2 text-sm font-bold text-gray-900 hover:bg-purple-500 transition-colors"
-                >
-                  {copied ? '✓ Copied!' : '📋 Copy'}
-                </button>
-              </div>
-              <div className="overflow-hidden rounded-xl border border-white/10 bg-gray-900">
-                <pre className="max-h-80 overflow-auto p-4 text-sm leading-6">
-                  <code className="text-green-400">{latestCode}</code>
-                </pre>
-              </div>
+        <div className="px-6 pb-24 lg:px-8 flex-1">
+          <div className="mx-auto max-w-[95rem]">
+            <div className="mb-6 flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-white">Live Editor & Preview</h2>
+              <button
+                onClick={handleCopy}
+                className="rounded-lg bg-purple-400 px-4 py-2 text-sm font-bold text-gray-900 hover:bg-purple-500 transition-colors"
+              >
+                {copied ? '✓ Copied!' : '📋 Copy Code'}
+              </button>
             </div>
+            
+            <div className="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+              <SandpackProvider
+                key={latestCode}
+                template="react"
+                theme="dark"
+                files={{
+                  "/App.js": {
+                    code: latestCode,
+                    active: true,
+                  },
+                  "/index.js": {
+                    code: `import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./styles.css";
 
-            <div className="rounded-2xl bg-white p-6 shadow-2xl">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Live Preview</h2>
-              <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
-                <iframe
-                  srcDoc={latestCode}
-                  title="Preview"
-                  className="w-full h-96"
-                />
-              </div>
+// Inject Tailwind CSS
+const script = document.createElement('script');
+script.src = 'https://cdn.tailwindcss.com';
+document.head.appendChild(script);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);`,
+                    hidden: false,
+                  },
+                  "/styles.css": {
+                    code: `* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}`,
+                    hidden: false,
+                  },
+                }}
+                options={{
+                  showNavigator: false,
+                  showTabs: true,
+                  showLineNumbers: true,
+                  editorHeight: "600px",
+                  autorun: true,
+                  autoReload: true,
+                }}
+              >
+                <SandpackLayout style={{ height: 700 }}>
+                  <SandpackFileExplorer style={{ minWidth: 150 }} />
+                  <SandpackCodeEditor 
+                    showLineNumbers
+                    showTabs
+                    style={{ flex: 2 }}
+                  />
+                  <SandpackPreview 
+                    showNavigator={false}
+                    showRefreshButton
+                    showOpenInCodeSandbox={false}
+                    style={{ flex: 3 }}
+                  />
+                </SandpackLayout>
+              </SandpackProvider>
             </div>
           </div>
         </div>

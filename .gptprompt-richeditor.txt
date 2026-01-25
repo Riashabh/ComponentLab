@@ -1,0 +1,13 @@
+Create a simple rich text editor component with:
+- Bold, Italic, Underline buttons in a toolbar
+- Uses contentEditable div
+- NO dangerouslySetInnerHTML (causes cursor issues)
+- Use useRef to access the div directly
+- Buttons use document.execCommand
+- Gray border, white background, rounded corners
+- Toolbar with light gray background
+- Min height 200px for editor area
+- Centered layout, max width 700px
+- Clean, modern Tailwind styling
+
+IMPORTANT: Do NOT use dangerouslySetInnerHTML. Just make the div contentEditable and let the browser handle it naturally.

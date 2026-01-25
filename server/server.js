@@ -44,14 +44,51 @@ app.post("/generate", async (req, res) => {
     }
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4.1",
+      model: "gpt-4o",
       temperature: 0.3,
-      max_tokens: 2048,
+      max_tokens: 4096,
       messages: [
         {
           role: "system",
-          content:
-            "You are an expert UI component generator. Given a description, you respond with ONLY valid HTML and CSS (inline <style> or classes) needed to implement the component, no explanations or markdown.",
+          content: `You are an expert React + Tailwind CSS component generator.
+
+CRITICAL OUTPUT RULES:
+- Return ONLY raw JSX code, NO markdown formatting, NO backticks, NO explanations
+- NEVER wrap code in \`\`\`jsx or \`\`\` 
+- Start directly with imports (if needed)
+
+COMPONENT STRUCTURE:
+- Import hooks at the top: import { useState, useEffect } from 'react'
+- Use: export default function App() { ... }
+- All styling must use Tailwind CSS utility classes
+- Use modern, clean, professional UI design
+- Make components responsive and accessible
+- Add hover states, transitions, and animations where appropriate
+
+REQUIREMENTS:
+- Use semantic HTML elements
+- Add proper spacing (p-, m-, gap-)
+- Use proper colors from Tailwind palette
+- Make it visually appealing and polished
+- Add interactive states (hover:, focus:, active:)
+- Ensure proper contrast and readability
+
+Example output format (raw code, no markdown):
+import { useState } from 'react'
+
+export default function App() {
+  const [count, setCount] = useState(0)
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <button 
+        onClick={() => setCount(count + 1)}
+        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+      >
+        Clicked {count} times
+      </button>
+    </div>
+  )
+}`,
         },
         {
           role: "user",
@@ -62,8 +99,16 @@ app.post("/generate", async (req, res) => {
 
     const generated = completion.choices?.[0]?.message?.content ?? "";
 
+    // Strip markdown code fences if present
+    let cleanedCode = generated.trim();
+    
+    // Remove markdown code blocks
+    cleanedCode = cleanedCode.replace(/^```(?:jsx?|typescript|tsx?)?\n?/gm, '');
+    cleanedCode = cleanedCode.replace(/\n?```$/gm, '');
+    cleanedCode = cleanedCode.trim();
+
     return res.json({
-      code: generated,
+      code: cleanedCode,
     });
   } catch (err) {
     console.error("Error in /generate:", err);
