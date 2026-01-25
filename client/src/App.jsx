@@ -28,7 +28,7 @@ function App() {
         ? `Previous code:\n${lastCode}\n\nUser request: ${prompt}`
         : prompt
 
-      const response = await fetch('http://localhost:3000/generate', {
+      const response = await fetch('https://componentlab-vexg.onrender.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: fullPrompt })
