@@ -6,6 +6,7 @@ import {
   SandpackPreview,
   SandpackFileExplorer,
 } from "@codesandbox/sandpack-react";
+import { Panel, Group, Separator } from "react-resizable-panels";
 
 function App() {
   const [prompt, setPrompt] = useState('')
@@ -221,20 +222,43 @@ body {
                   autoReload: true,
                 }}
               >
-                <SandpackLayout style={{ minWidth: '1200px', height: '700px' }}>
-                  <SandpackFileExplorer style={{ height: '100%' }} />
-                  <SandpackCodeEditor 
-                    showLineNumbers
-                    showTabs
-                    style={{ flex: 2, height: '100%' }}
-                  />
-                  <SandpackPreview 
-                    showNavigator={false}
-                    showRefreshButton
-                    showOpenInCodeSandbox={false}
-                    style={{ flex: 3, height: '100%' }}
-                  />
-                </SandpackLayout>
+                <div style={{ height: '700px', borderRadius: '0.5rem', border: '1px solid rgba(255, 255, 255, 0.1)', overflow: 'hidden' }}>
+                  <SandpackLayout style={{ height: '100%' }}>
+                    <div style={{ width: '250px', height: '100%' }}>
+                      <SandpackFileExplorer style={{ height: '100%' }} />
+                    </div>
+                    
+                    <Group orientation="horizontal" style={{ height: '100%', flex: 1 }}>
+                      <Panel defaultSize={40} minSize={25}>
+                        <SandpackCodeEditor 
+                          showLineNumbers
+                          showTabs
+                          style={{ height: '100%' }}
+                        />
+                      </Panel>
+                      
+                      <Separator style={{
+                        width: '8px',
+                        background: 'rgba(168, 85, 247, 0.3)',
+                        cursor: 'col-resize',
+                        transition: 'background 0.2s ease',
+                        flexShrink: 0
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(168, 85, 247, 0.6)'}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(168, 85, 247, 0.3)'}
+                      />
+                      
+                      <Panel defaultSize={60} minSize={30}>
+                        <SandpackPreview 
+                          showNavigator={false}
+                          showRefreshButton
+                          showOpenInCodeSandbox={false}
+                          style={{ height: '100%' }}
+                        />
+                      </Panel>
+                    </Group>
+                  </SandpackLayout>
+                </div>
               </SandpackProvider>
           </div>
         </div>
