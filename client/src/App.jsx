@@ -174,8 +174,7 @@ function App() {
               </button>
             </div>
             
-            <div className="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
-              <SandpackProvider
+            <SandpackProvider
                 key={latestCode}
                 template="react"
                 theme="dark"
@@ -217,27 +216,26 @@ body {
                   showNavigator: false,
                   showTabs: true,
                   showLineNumbers: true,
-                  editorHeight: "600px",
+                  editorHeight: "100%",
                   autorun: true,
                   autoReload: true,
                 }}
               >
-                <SandpackLayout style={{ height: 700 }}>
-                  <SandpackFileExplorer style={{ minWidth: 150 }} />
+                <SandpackLayout style={{ minWidth: '1200px', height: '700px' }}>
+                  <SandpackFileExplorer style={{ height: '100%' }} />
                   <SandpackCodeEditor 
                     showLineNumbers
                     showTabs
-                    style={{ flex: 2 }}
+                    style={{ flex: 2, height: '100%' }}
                   />
                   <SandpackPreview 
                     showNavigator={false}
                     showRefreshButton
                     showOpenInCodeSandbox={false}
-                    style={{ flex: 3 }}
+                    style={{ flex: 3, height: '100%' }}
                   />
                 </SandpackLayout>
               </SandpackProvider>
-            </div>
           </div>
         </div>
       )}
