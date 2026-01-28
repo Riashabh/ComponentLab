@@ -162,7 +162,65 @@ function App() {
         </div>
       </div>
 
-      {latestCode && (
+      {loading && (
+        <div className="px-6 pb-24 lg:px-8 flex-1">
+          <div className="mx-auto max-w-[95rem]">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-white">Generating your component</h2>
+            </div>
+            
+            <div className="rounded-2xl bg-white/5 p-8 ring-1 ring-white/10 shadow-2xl backdrop-blur-sm" style={{ minHeight: '700px' }}>
+              {/* Animated header */}
+              <div className="flex items-center gap-3 mb-8">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                  <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                  <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                </div>
+                <span className="text-purple-300 font-semibold">AI is crafting your component...</span>
+              </div>
+
+              {/* Skeleton layout */}
+              <div className="grid grid-cols-12 gap-6 h-[600px]">
+                {/* File tree skeleton */}
+                <div className="col-span-3 space-y-3">
+                  <div className="h-8 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded animate-pulse"></div>
+                  <div className="h-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded animate-pulse ml-4" style={{ animationDelay: '100ms' }}></div>
+                  <div className="h-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded animate-pulse ml-4" style={{ animationDelay: '200ms' }}></div>
+                  <div className="h-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded animate-pulse ml-4" style={{ animationDelay: '300ms' }}></div>
+                </div>
+
+                {/* Code editor skeleton */}
+                <div className="col-span-5 space-y-3">
+                  <div className="h-full bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 rounded-lg p-6 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent animate-shimmer"></div>
+                    <div className="space-y-4 relative z-10">
+                      <div className="h-4 bg-purple-400/20 rounded w-3/4 animate-pulse"></div>
+                      <div className="h-4 bg-purple-400/20 rounded w-full animate-pulse" style={{ animationDelay: '100ms' }}></div>
+                      <div className="h-4 bg-purple-400/20 rounded w-5/6 animate-pulse" style={{ animationDelay: '200ms' }}></div>
+                      <div className="h-4 bg-purple-400/20 rounded w-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                      <div className="h-4 bg-purple-400/20 rounded w-2/3 animate-pulse" style={{ animationDelay: '400ms' }}></div>
+                      <div className="h-4 bg-purple-400/20 rounded w-full animate-pulse" style={{ animationDelay: '500ms' }}></div>
+                      <div className="h-4 bg-purple-400/20 rounded w-4/5 animate-pulse" style={{ animationDelay: '600ms' }}></div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Preview skeleton */}
+                <div className="col-span-4 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 rounded-lg p-6 flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-500/10 to-transparent animate-shimmer" style={{ animationDelay: '500ms' }}></div>
+                  <div className="text-center z-10">
+                    <div className="w-20 h-20 border-4 border-purple-400/30 border-t-purple-400 rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-purple-300 font-medium">Building preview...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {latestCode && !loading && (
         <div className="px-6 pb-24 lg:px-8 flex-1">
           <div className="mx-auto max-w-[95rem]">
             <div className="mb-6 flex justify-between items-center">
