@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import {
   SandpackProvider,
   SandpackLayout,
@@ -13,6 +13,7 @@ function App() {
   const [conversation, setConversation] = useState([])
   const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
+  const previewRef = useRef(null)
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return
@@ -47,6 +48,11 @@ function App() {
       }])
       
       setPrompt('') // Clear input for next message
+      
+      // Scroll to preview after generation
+      setTimeout(() => {
+        previewRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
     } catch (error) {
       console.error('Error:', error)
       alert('Failed to generate. Make sure backend is running.')
@@ -54,21 +60,85 @@ function App() {
     setLoading(false)
   }
 
-  const handleNewComponent = () => {
+  const handleNewComponent = async () => {
+    if (!prompt.trim()) return
+    
+    // Clear conversation but keep the prompt
     setConversation([])
-    setPrompt('')
     setCopied(false)
+    setLoading(true)
+    
+    try {
+      // Generate with current prompt as a fresh start
+      const response = await fetch('https://componentlab-vexg.onrender.com/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      })
+      
+      if (!response.ok) throw new Error('Failed to generate')
+      
+      const data = await response.json()
+      
+      // Add to conversation history
+      setConversation([{
+        userPrompt: prompt,
+        code: data.code,
+        timestamp: Date.now()
+      }])
+      
+      // Scroll to preview after generation
+      setTimeout(() => {
+        previewRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
+    } catch (error) {
+      console.error('Error:', error)
+      alert('Failed to generate. Make sure backend is running.')
+    }
+    setLoading(false)
   }
 
   const handleCopy = async () => {
-    if (conversation.length === 0) return
+    console.log('Copy button clicked')
+    console.log('Conversation:', conversation)
+    
+    if (conversation.length === 0) {
+      alert('No code to copy - conversation is empty')
+      return
+    }
+    
     const latestCode = conversation[conversation.length - 1].code
+    console.log('Latest code to copy:', latestCode)
+    
+    if (!latestCode) {
+      alert('No code to copy - code is undefined')
+      return
+    }
+    
     try {
       await navigator.clipboard.writeText(latestCode)
+      console.log('Copied successfully using Clipboard API')
       setCopied(true)
       setTimeout(() => setCopied(false), 1200)
     } catch (error) {
-      console.error('Copy failed:', error)
+      console.error('Copy failed with Clipboard API:', error)
+      // Fallback method for older browsers or when clipboard API fails
+      const textArea = document.createElement('textarea')
+      textArea.value = latestCode
+      textArea.style.position = 'fixed'
+      textArea.style.left = '-999999px'
+      document.body.appendChild(textArea)
+      textArea.select()
+      try {
+        document.execCommand('copy')
+        console.log('Copied successfully using fallback method')
+        setCopied(true)
+        setTimeout(() => setCopied(false), 1200)
+      } catch (err) {
+        console.error('Fallback copy also failed:', err)
+        alert('Failed to copy code. Please copy manually from the editor.')
+      }
+      document.body.removeChild(textArea)
     }
   }
 
@@ -221,9 +291,9 @@ function App() {
       )}
 
       {latestCode && !loading && (
-        <div className="px-6 pb-24 lg:px-8 flex-1">
+        <div ref={previewRef} className="px-6 pb-24 lg:px-8 flex-1">
           <div className="mx-auto max-w-[95rem]">
-            <div className="mb-6 flex justify-between items-center">
+            <div className="mb-6 flex justify-between items-center relative z-50">
               <h2 className="text-2xl font-bold text-white">Live Editor & Preview</h2>
               <button
                 onClick={handleCopy}
@@ -282,7 +352,7 @@ body {
               >
                 <div style={{ height: '700px', borderRadius: '0.5rem', border: '1px solid rgba(255, 255, 255, 0.1)', overflow: 'hidden' }}>
                   <SandpackLayout style={{ height: '100%' }}>
-                    <div style={{ width: '250px', height: '100%' }}>
+                    <div style={{ width: '125px', height: '100%' }}>
                       <SandpackFileExplorer style={{ height: '100%' }} />
                     </div>
                     
@@ -296,7 +366,7 @@ body {
                       </Panel>
                       
                       <Separator style={{
-                        width: '8px',
+                        width: '4px',
                         background: 'rgba(168, 85, 247, 0.3)',
                         cursor: 'col-resize',
                         transition: 'background 0.2s ease',
