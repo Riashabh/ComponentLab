@@ -364,7 +364,7 @@ body {
                           style={{ height: '100%' }}
                         />
                       </Panel>
-                      
+                       
                       <Separator style={{
                         width: '4px',
                         background: 'rgba(168, 85, 247, 0.3)',
@@ -380,7 +380,7 @@ body {
                         <SandpackPreview 
                           showNavigator={false}
                           showRefreshButton
-                          showOpenInCodeSandbox={false}
+                          showOpenInCodeSandbox={true}
                           style={{ height: '100%' }}
                         />
                       </Panel>
