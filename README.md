@@ -214,7 +214,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ---
 
-<p align="center">Made with ❤️ by Rishabh Meena</p>
+<p align="center">Rishabh Meena</p>
 
 <p align="center">
   <a href="https://componentlab-ai.vercel.app">
