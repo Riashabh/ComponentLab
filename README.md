@@ -2,7 +2,9 @@
 
 An AI-powered UI component generator that transforms natural language into production-ready React components with live preview and code editing.
 
-![Demo](demo.gif)
+<p align="center">
+  <img src="./demo.gif" alt="ComponentLab Demo" width="900"/>
+</p>
 
 ## ✨ Features
 
