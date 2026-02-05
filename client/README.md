@@ -1,122 +1,16 @@
-# ComponentLab
+# React + Vite
 
-An AI-powered UI component generator that transforms natural language into production-ready React components with live preview and code editing.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-![Demo](demo.gif)
+Currently, two official plugins are available:
 
-## ✨ Features
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-- **Natural Language to Code** — Describe a component, get working React + Tailwind code
-- **Live Preview** — See your component render in real-time
-- **In-Browser Code Editor** — Edit code with syntax highlighting via Sandpack
-- **Iterative Refinement** — Keep editing with follow-up prompts ("make it darker", "add a hover effect")
-- **Export to CodeSandbox** — One-click export to continue working in a full IDE
-- **Copy Code** — Grab the generated code instantly
+## React Compiler
 
-## 🛠️ Tech Stack
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-**Frontend:**
-- React + Vite
-- Tailwind CSS
-- Sandpack (live code editor)
+## Expanding the ESLint configuration
 
-**Backend:**
-- Express.js
-- OpenAI API (GPT-4)
-
-**Deployment:**
-- Frontend: Vercel
-- Backend: Render
-
-## 🚀 Live Demo
-
-**[componentlab-ai.vercel.app](https://componentlab-ai.vercel.app)**
-
-## 📦 Run Locally
-
-### Prerequisites
-
-- Node.js 18+
-- OpenAI API key
-
-### Setup
-
-1. Clone the repo:
-
-```bash
-git clone https://github.com/Riashabh/ComponentLab.git
-cd ComponentLab
-```
-
-2. Install dependencies:
-
-```bash
-# Frontend
-cd client
-npm install
-
-# Backend
-cd ../server
-npm install
-```
-
-3. Add your OpenAI key:
-
-```bash
-# In /server, create .env file
-echo "OPENAI_API_KEY=your-key-here" > .env
-```
-
-4. Start both servers:
-
-```bash
-# Terminal 1 - Backend
-cd server
-npm start
-
-# Terminal 2 - Frontend
-cd client
-npm run dev
-```
-
-5. Open [localhost:5173](http://localhost:5173)
-
-## 💡 Example Prompts
-
-- "A pricing card with a title, price, 3 features, and a CTA button"
-- "A toggle switch that shows ON/OFF with smooth animation"
-- "A glassmorphism login form with blur effect"
-- "A dark mode card with hover effects and a gradient border"
-
-## 📁 Project Structure
-
-```
-ComponentLab/
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── App.jsx        # Main app with Sandpack integration
-│   │   └── ...
-│   └── package.json
-├── server/                 # Express backend
-│   ├── server.js          # API endpoint for code generation
-│   └── package.json
-└── README.md
-```
-
-## 🔮 Future Improvements
-
-- [ ] Component history/versioning
-- [ ] Share components via unique URLs
-- [ ] Support for Vue/Svelte output
-- [ ] AI chat sidebar for code explanations
-
-## 👤 Author
-
-**Rishabh Meena**
-
-- GitHub: [@Riashabh](https://github.com/Riashabh)
-- LinkedIn: [meenarishabh35](https://linkedin.com/in/meenarishabh35)
-
-## 📄 License
-
-MIT
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
