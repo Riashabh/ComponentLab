@@ -307,7 +307,26 @@ function App() {
                 key={latestCode}
                 template="react"
                 theme="dark"
+                customSetup={{
+                  dependencies: {
+                    "react-icons": "^4.11.0",
+                    "lucide-react": "^0.263.1",
+                    "framer-motion": "^10.16.4"
+                  }
+                }}
                 files={{
+                  "/package.json": {
+                    code: JSON.stringify({
+                      dependencies: {
+                        "react": "^18.2.0",
+                        "react-dom": "^18.2.0",
+                        "react-icons": "^4.11.0",
+                        "lucide-react": "^0.263.1",
+                        "framer-motion": "^10.16.4"
+                      }
+                    }, null, 2),
+                    hidden: true,
+                  },
                   "/App.js": {
                     code: latestCode,
                     active: true,
